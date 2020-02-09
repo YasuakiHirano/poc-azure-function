@@ -1,3 +1,9 @@
 {
-    "version": "2.0"
+  "version": "2.0",
+  "logging": {
+    "logLevel": {
+      "poc_azure_function.Controllers": "Trace",
+      "default": "Trace"
+    }
+  }
 }
