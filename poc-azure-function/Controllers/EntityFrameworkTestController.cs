@@ -98,7 +98,7 @@ namespace poc_azure_function.Controllers
 
 
         [FunctionName("EntityFrameworkTestController_Insert")]
-        public static async System.Threading.Tasks.Task<IActionResult> InsertAsync(
+        public static async System.Threading.Tasks.Task<IActionResult> Insert(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "efcore_test_insert")] HttpRequest req,
             ILogger log)
         {
@@ -125,5 +125,35 @@ namespace poc_azure_function.Controllers
 
             return new OkResult();
         }
+
+        [FunctionName("EntityFrameworkTestController_Update")]
+        public static async System.Threading.Tasks.Task<IActionResult> UpdateAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "efcore_test_update")] HttpRequest req,
+            ILogger log
+        )
+        {
+            log.LogInformation("start EntityFrameworkTestController_Update");
+            // jsonリクエストを取得
+
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            dynamic data = JsonConvert.DeserializeObject(requestBody);
+
+            // jsonリクエストで掲示板更新
+            using (var _dbContext = new DBContextFactory().CreateDbContext())
+            {
+                var board = _dbContext.Boards.Find((long)data?.Id);
+                if (board != null)
+                {
+                    board.Title = data?.Title;
+                    board.UserName = data?.UserName;
+                    board.AboutText = data?.AboutText;
+                    board.Password = data?.Password;
+                    _dbContext.SaveChanges();
+                }
+            }
+
+            return new OkResult();
+        }
+
     }
 }
