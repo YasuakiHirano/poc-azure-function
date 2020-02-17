@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using poc_azure_function.Model;
 
 namespace poc_azure_function.Controllers
@@ -89,6 +91,36 @@ namespace poc_azure_function.Controllers
                     OutputBoard(joinObject.Board);
                     OutputMessage(joinObject.Message);
                 }
+            }
+
+            return new OkResult();
+        }
+
+
+        [FunctionName("EntityFrameworkTestController_Insert")]
+        public static async System.Threading.Tasks.Task<IActionResult> InsertAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "efcore_test_insert")] HttpRequest req,
+            ILogger log)
+        {
+            log.LogInformation("start EntityFrameworkTestController_Insert");
+
+            // jsonリクエストを取得
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            dynamic data = JsonConvert.DeserializeObject(requestBody);
+
+            // jsonリクエストで掲示板登録
+            using (var _dbContext = new DBContextFactory().CreateDbContext())
+            {
+                var board = new Board
+                {
+                    Title = data?.Title,
+                    UserName = data?.UserName,
+                    AboutText = data?.AboutText,
+                    Password = data?.Password
+                };
+
+                _dbContext.Boards.Add(board);
+                _dbContext.SaveChanges();
             }
 
             return new OkResult();

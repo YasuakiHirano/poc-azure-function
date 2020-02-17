@@ -9,14 +9,14 @@ using poc_azure_function;
 namespace poc_azure_function.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20200205133451_InitialCreate")]
+    [Migration("20200210141827_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.1")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -25,24 +25,19 @@ namespace poc_azure_function.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("id")
-                        .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AboutText")
-                        .HasColumnName("about_text")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnName("about_text");
 
                     b.Property<string>("Password")
-                        .HasColumnName("password")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnName("password");
 
                     b.Property<string>("Title")
-                        .HasColumnName("title")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnName("title");
 
                     b.Property<string>("UserName")
-                        .HasColumnName("user_name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnName("user_name");
 
                     b.HasKey("Id");
 
@@ -54,20 +49,16 @@ namespace poc_azure_function.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("id")
-                        .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<long>("BoardId")
-                        .HasColumnName("board_id")
-                        .HasColumnType("bigint");
+                        .HasColumnName("board_id");
 
                     b.Property<string>("MessageText")
-                        .HasColumnName("message")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnName("message");
 
                     b.Property<string>("UserName")
-                        .HasColumnName("user_name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnName("user_name");
 
                     b.HasKey("Id");
 
@@ -79,20 +70,16 @@ namespace poc_azure_function.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("id")
-                        .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
-                        .HasColumnName("email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnName("email");
 
                     b.Property<string>("EmailVerifiedAt")
-                        .HasColumnName("email_verified_at")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnName("email_verified_at");
 
                     b.Property<string>("Name")
-                        .HasColumnName("name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnName("name");
 
                     b.HasKey("Id");
 

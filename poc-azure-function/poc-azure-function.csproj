@@ -23,6 +23,7 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Controllers\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Copy SourceFiles="$(TargetDir)bin\$(TargetFileName)" DestinationFiles="$(TargetDir)$(TargetFileName)" />

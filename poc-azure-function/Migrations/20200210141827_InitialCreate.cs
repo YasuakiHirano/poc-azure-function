@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace poc_azure_function.Migrations
 {
@@ -11,7 +12,7 @@ namespace poc_azure_function.Migrations
                 columns: table => new
                 {
                     id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     title = table.Column<string>(nullable: true),
                     user_name = table.Column<string>(nullable: true),
                     about_text = table.Column<string>(nullable: true),
@@ -27,7 +28,7 @@ namespace poc_azure_function.Migrations
                 columns: table => new
                 {
                     id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     board_id = table.Column<long>(nullable: false),
                     user_name = table.Column<string>(nullable: true),
                     message = table.Column<string>(nullable: true)
@@ -42,7 +43,7 @@ namespace poc_azure_function.Migrations
                 columns: table => new
                 {
                     id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     name = table.Column<string>(nullable: true),
                     email = table.Column<string>(nullable: true),
                     email_verified_at = table.Column<string>(nullable: true)
