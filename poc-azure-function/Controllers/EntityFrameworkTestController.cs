@@ -133,8 +133,8 @@ namespace poc_azure_function.Controllers
         )
         {
             log.LogInformation("start EntityFrameworkTestController_Update");
-            // jsonリクエストを取得
 
+            // jsonリクエストを取得
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
 

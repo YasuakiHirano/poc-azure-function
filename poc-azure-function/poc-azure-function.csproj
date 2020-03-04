@@ -24,6 +24,22 @@
     <Folder Include="Models\" />
     <Folder Include="Controllers\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Request\" />
+    <Folder Include="Resource\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resource\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Resource\Resources.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Resource\Messages.Designer.cs">
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Copy SourceFiles="$(TargetDir)bin\$(TargetFileName)" DestinationFiles="$(TargetDir)$(TargetFileName)" />
