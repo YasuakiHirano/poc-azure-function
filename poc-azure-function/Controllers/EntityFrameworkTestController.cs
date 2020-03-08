@@ -127,7 +127,7 @@ namespace poc_azure_function.Controllers
         }
 
         [FunctionName("EntityFrameworkTestController_Update")]
-        public static async System.Threading.Tasks.Task<IActionResult> UpdateAsync(
+        public static async System.Threading.Tasks.Task<IActionResult> Update(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "efcore_test_update")] HttpRequest req,
             ILogger log
         )
@@ -155,5 +155,28 @@ namespace poc_azure_function.Controllers
             return new OkResult();
         }
 
+
+        [FunctionName("EntityFrameworkTestController_Delete")]
+        public static IActionResult Delete(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "efcore_test_delete/{id:long}")] HttpRequest req,
+            long Id,
+            ILogger log
+        )
+        {
+            log.LogInformation("start EntityFrameworkTestController_Delete");
+
+            using (var _dbContext = new DBContextFactory().CreateDbContext())
+            {
+                var board = _dbContext.Boards.Find(Id);
+                if (board == null) {
+                    return new UnprocessableEntityObjectResult("board is null");
+                }
+
+                _dbContext.Boards.Remove(board);
+                _dbContext.SaveChanges();
+            }
+
+            return new OkObjectResult($"Delete Id: {Id}");
+        }
     }
 }
