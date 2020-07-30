@@ -60,6 +60,64 @@ namespace poc_azure_function.Controllers
             }
 
             return new CreatedResult("", request);
-        }        
+        }
+
+        [FunctionName("CastTestController_Run")]
+        public static IActionResult CastTestRun(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "cast/default")] HttpRequest req
+        )
+        {
+            var idText = req.Query["userId"];
+            var ageText = req.Query["age"];
+
+            Guid id;
+            int age;
+
+            try
+            {
+                id = Guid.Parse(idText);
+                age = int.Parse(ageText);
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult(new Dictionary<string, object> { { "エラーが発生しました。パラメータを確認してください。", e } });
+            }
+
+
+            var result = new Dictionary<string, string>
+            {
+                { "ID", id.ToString() },
+                { "年齢", age.ToString() }
+            };
+
+            return new OkObjectResult(result);
+        }
+
+        [FunctionName("CastTestController_Try")]
+        public static IActionResult CastTestTry(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "cast/try")] HttpRequest req
+        )
+        {
+            string idText = req.Query["userId"];
+            string ageText = req.Query["age"];
+
+            if (!Guid.TryParse(idText, out Guid id))
+            {
+                return new BadRequestObjectResult(new Dictionary<string, object> { { "ユーザーIDでエラーが発生しました。パラメータを確認してください。", idText } });
+            }
+
+            if (!int.TryParse(ageText, out int age))
+            {
+                return new BadRequestObjectResult(new Dictionary<string, object> { { "年齢でエラーが発生しました。パラメータを確認してください。", ageText } });
+            }
+
+            var result = new Dictionary<string, string>
+            {
+                { "ID", id.ToString() },
+                { "年齢", age.ToString() }
+            };
+
+            return new OkObjectResult(result);
+        }
     }
 }
