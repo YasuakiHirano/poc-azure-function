@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using poc_azure_function.Request;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace poc_azure_function.Controllers
 {
@@ -118,6 +119,63 @@ namespace poc_azure_function.Controllers
             };
 
             return new OkObjectResult(result);
+        }
+
+        [FunctionName("ThreadTest")]
+        public static IActionResult ThreadTest(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "thead/test")] HttpRequest req
+        )
+        {
+            Task.Run(() => {
+                Thread.Sleep(3000);
+                var name = req.Query["name"];
+                Console.WriteLine($"名前は{name}です。");
+            });
+            return new OkObjectResult("thread test!!");
+        }
+
+        [FunctionName("ThreadTest2")]
+        public static IActionResult ThreadTest2(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "thead/test2")] HttpRequest req
+        )
+        {
+            var name = req.Query["name"];
+            Task.Run(() => {
+                var name = req.Query["name"];
+                Thread.Sleep(3000);
+                Console.WriteLine($"名前は{name}です。");
+            });
+            return new OkObjectResult("thread test!!");
+        }
+
+        [FunctionName("ThreadTest3")]
+        public static IActionResult ThreadTest3(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "thead/test3")] HttpRequest req
+        )
+        {
+            Task.Run(() => {
+                Thread.Sleep(1000);
+                Console.WriteLine($"thread test1");
+            });
+            Task.Run(() => {
+                Thread.Sleep(1000);
+                Console.WriteLine($"thread test2");
+            });
+            Task.Run(() => {
+                Thread.Sleep(1000);
+                Console.WriteLine($"thread test3");
+            });
+
+            var newTask = new Task(TaskMethod);
+            newTask.Start();
+
+            Console.WriteLine($"thread test4");
+            return new OkObjectResult("thread test!!");
+        }
+
+        private static void TaskMethod() {
+            Thread.Sleep(1000);
+            Console.WriteLine($"task method!!");
         }
     }
 }
